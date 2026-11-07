@@ -19,7 +19,8 @@
       "specifications": [],
       "status": "PUBLISHED",
       "price": "Sur demande",
-      "isNewArrival": false
+      "isNewArrival": false,
+      "isEquipementAccueil": true
     },
     {
       "id": "tvs-jacket-aegis",
@@ -40,7 +41,8 @@
       "specifications": [],
       "status": "PUBLISHED",
       "price": "Sur demande",
-      "isNewArrival": false
+      "isNewArrival": false,
+      "isEquipementAccueil": false
     },
     {
       "id": "tvs-gloves-city",
@@ -61,7 +63,8 @@
       "specifications": [],
       "status": "PUBLISHED",
       "price": "Sur demande",
-      "isNewArrival": false
+      "isNewArrival": false,
+      "isEquipementAccueil": false
     },
     {
       "id": "g1",
@@ -82,7 +85,8 @@
       "specifications": [],
       "status": "PUBLISHED",
       "price": "Sur devis",
-      "isNewArrival": false
+      "isNewArrival": false,
+      "isEquipementAccueil": false
     },
     {
       "id": "g2",
@@ -103,7 +107,8 @@
       "specifications": [],
       "status": "PUBLISHED",
       "price": "Sur devis",
-      "isNewArrival": false
+      "isNewArrival": false,
+      "isEquipementAccueil": false
     },
     {
       "id": "g3",
@@ -124,7 +129,8 @@
       "specifications": [],
       "status": "PUBLISHED",
       "price": "Sur devis",
-      "isNewArrival": false
+      "isNewArrival": false,
+      "isEquipementAccueil": false
     },
     {
       "id": "g4",
@@ -145,7 +151,8 @@
       "specifications": [],
       "status": "PUBLISHED",
       "price": "Sur devis",
-      "isNewArrival": false
+      "isNewArrival": false,
+      "isEquipementAccueil": false
     },
     {
       "id": "g5",
@@ -166,7 +173,8 @@
       "specifications": [],
       "status": "PUBLISHED",
       "price": "Sur devis",
-      "isNewArrival": false
+      "isNewArrival": false,
+      "isEquipementAccueil": false
     },
     {
       "id": "g6",
@@ -187,7 +195,8 @@
       "specifications": [],
       "status": "PUBLISHED",
       "price": "Sur devis",
-      "isNewArrival": false
+      "isNewArrival": false,
+      "isEquipementAccueil": false
     }
   ]
 }

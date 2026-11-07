@@ -121,21 +121,21 @@ function readProductInput()
 }
 
 /**
- * Vérifie que isNewArrival est un booléen lorsqu'il est fourni.
+ * Vérifie les booléens utilisés par les sections de la page d'accueil.
  */
-function validateNewArrival($product)
+function validateHomepageFields($product)
 {
-    if (
-        array_key_exists("isNewArrival", $product) &&
-        !is_bool($product["isNewArrival"])
-    ) {
-        respond(
-            false,
-            null,
-            "isNewArrival doit être un booléen.",
-            400
-        );
+    foreach (["isNewArrival", "isEquipementAccueil"] as $field) {
+        if (array_key_exists($field, $product) && !is_bool($product[$field])) {
+            respond(false, null, $field . " doit être un booléen.", 400);
+        }
     }
+}
+
+function applyHomepageDefaults(&$product)
+{
+    $product["isNewArrival"] = $product["isNewArrival"] ?? false;
+    $product["isEquipementAccueil"] = $product["isEquipementAccueil"] ?? false;
 }
 
 function normalizeImages($images, $productId, $productName)
@@ -450,6 +450,14 @@ funbikeProtectWriteMethods($method);
 $id = $_GET["id"] ?? $_POST["id"] ?? null;
 $data = readProducts($jsonFile);
 
+// Les anciens produits sans le champ sont exposés avec false par défaut.
+foreach ($data["products"] as &$storedProduct) {
+    if (is_array($storedProduct)) {
+        applyHomepageDefaults($storedProduct);
+    }
+}
+unset($storedProduct);
+
 // =====================================================
 // GET - RÉCUPÉRER LES ÉQUIPEMENTS
 // =====================================================
@@ -475,10 +483,10 @@ if ($method === "GET") {
 if ($method === "POST") {
     $product = readProductInput();
 
-    validateNewArrival($product);
+    validateHomepageFields($product);
 
-    // Un nouvel équipement n'est pas une nouveauté par défaut.
-    $product["isNewArrival"] = $product["isNewArrival"] ?? false;
+    // Un nouvel équipement n'est sélectionné pour aucune section par défaut.
+    applyHomepageDefaults($product);
 
     if (empty($product["name"])) {
         respond(false, null, "Le nom du produit est obligatoire.", 400);
@@ -550,7 +558,7 @@ if ($method === "PUT") {
 
     $productInput = readProductInput();
 
-    validateNewArrival($productInput);
+    validateHomepageFields($productInput);
 
     $found = false;
 
@@ -562,9 +570,8 @@ if ($method === "PUT") {
         $found = true;
         $product = array_merge($existingProduct, $productInput);
 
-        // Conserve la valeur existante si elle n'est pas envoyée.
-        // Pour un ancien produit sans ce champ, utilise false.
-        $product["isNewArrival"] = $product["isNewArrival"] ?? false;
+        // Conserve les sélections existantes si elles ne sont pas envoyées.
+        applyHomepageDefaults($product);
 
         if (empty($product["name"])) {
             respond(false, null, "Le nom du produit est obligatoire.", 400);

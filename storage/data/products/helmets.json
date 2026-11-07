@@ -19,7 +19,8 @@
       "specifications": [],
       "status": "PUBLISHED",
       "price": "Sur demande",
-      "isNewArrival": false
+      "isNewArrival": false,
+      "isEquipementAccueil": true
     },
     {
       "id": "tvs-helmet-anti-matter",
@@ -40,7 +41,8 @@
       "specifications": [],
       "status": "PUBLISHED",
       "price": "Sur demande",
-      "isNewArrival": false
+      "isNewArrival": false,
+      "isEquipementAccueil": false
     },
     {
       "id": "h1",
@@ -61,7 +63,8 @@
       "specifications": [],
       "status": "PUBLISHED",
       "price": "Sur devis",
-      "isNewArrival": false
+      "isNewArrival": false,
+      "isEquipementAccueil": false
     },
     {
       "id": "h2",
@@ -82,7 +85,8 @@
       "specifications": [],
       "status": "PUBLISHED",
       "price": "Sur devis",
-      "isNewArrival": false
+      "isNewArrival": false,
+      "isEquipementAccueil": false
     },
     {
       "id": "h3",
@@ -103,7 +107,8 @@
       "specifications": [],
       "status": "PUBLISHED",
       "price": "Sur devis",
-      "isNewArrival": false
+      "isNewArrival": false,
+      "isEquipementAccueil": false
     },
     {
       "id": "h4",
@@ -124,7 +129,8 @@
       "specifications": [],
       "status": "PUBLISHED",
       "price": "Sur devis",
-      "isNewArrival": false
+      "isNewArrival": false,
+      "isEquipementAccueil": false
     },
     {
       "id": "h5",
@@ -145,7 +151,8 @@
       "specifications": [],
       "status": "PUBLISHED",
       "price": "Sur devis",
-      "isNewArrival": false
+      "isNewArrival": false,
+      "isEquipementAccueil": false
     },
     {
       "id": "h6",
@@ -166,7 +173,8 @@
       "specifications": [],
       "status": "PUBLISHED",
       "price": "Sur devis",
-      "isNewArrival": false
+      "isNewArrival": false,
+      "isEquipementAccueil": false
     },
     {
       "id": "t1",
@@ -187,7 +195,8 @@
       "specifications": [],
       "status": "PUBLISHED",
       "price": "Sur devis",
-      "isNewArrival": false
+      "isNewArrival": false,
+      "isEquipementAccueil": false
     },
     {
       "id": "t2",
@@ -208,7 +217,8 @@
       "specifications": [],
       "status": "PUBLISHED",
       "price": "Sur devis",
-      "isNewArrival": false
+      "isNewArrival": false,
+      "isEquipementAccueil": false
     },
     {
       "id": "t3",
@@ -229,7 +239,8 @@
       "specifications": [],
       "status": "PUBLISHED",
       "price": "Sur devis",
-      "isNewArrival": false
+      "isNewArrival": false,
+      "isEquipementAccueil": false
     },
     {
       "id": "t4",
@@ -250,7 +261,8 @@
       "specifications": [],
       "status": "PUBLISHED",
       "price": "Sur devis",
-      "isNewArrival": false
+      "isNewArrival": false,
+      "isEquipementAccueil": false
     },
     {
       "id": "t5",
@@ -271,7 +283,8 @@
       "specifications": [],
       "status": "PUBLISHED",
       "price": "Sur devis",
-      "isNewArrival": false
+      "isNewArrival": false,
+      "isEquipementAccueil": false
     },
     {
       "id": "t6",
@@ -292,7 +305,8 @@
       "specifications": [],
       "status": "PUBLISHED",
       "price": "Sur devis",
-      "isNewArrival": false
+      "isNewArrival": false,
+      "isEquipementAccueil": false
     },
     {
       "id": "t7",
@@ -313,7 +327,8 @@
       "specifications": [],
       "status": "PUBLISHED",
       "price": "Sur devis",
-      "isNewArrival": false
+      "isNewArrival": false,
+      "isEquipementAccueil": false
     },
     {
       "id": "t8",
@@ -334,7 +349,8 @@
       "specifications": [],
       "status": "PUBLISHED",
       "price": "Sur devis",
-      "isNewArrival": false
+      "isNewArrival": false,
+      "isEquipementAccueil": false
     },
     {
       "id": "t9",
@@ -355,7 +371,8 @@
       "specifications": [],
       "status": "PUBLISHED",
       "price": "Sur devis",
-      "isNewArrival": false
+      "isNewArrival": false,
+      "isEquipementAccueil": false
     },
     {
       "id": "t10",
@@ -376,7 +393,8 @@
       "specifications": [],
       "status": "PUBLISHED",
       "price": "Sur devis",
-      "isNewArrival": false
+      "isNewArrival": false,
+      "isEquipementAccueil": false
     },
     {
       "id": "t11",
@@ -397,7 +415,8 @@
       "specifications": [],
       "status": "PUBLISHED",
       "price": "Sur devis",
-      "isNewArrival": false
+      "isNewArrival": false,
+      "isEquipementAccueil": false
     }
   ]
 }
