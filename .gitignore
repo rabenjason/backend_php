@@ -1,0 +1,7 @@
+# Comptes réels, empreintes de mots de passe et verrous locaux : ne jamais committer.
+/storage/private/users.json
+/storage/private/*.lock
+/storage/private/.users-*
+
+# Fichiers temporaires locaux.
+*.tmp

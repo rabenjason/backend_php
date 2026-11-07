@@ -1,19 +1,11 @@
-
 <?php
 // ==========================================
 // FUNBIKE - CONTACT API
 // server/api/contacts.php
 // ==========================================
 
-header("Content-Type: application/json; charset=UTF-8");
-header("Access-Control-Allow-Origin: *");
-header("Access-Control-Allow-Methods: GET, PUT, OPTIONS");
-header("Access-Control-Allow-Headers: Content-Type, Authorization");
-
-if ($_SERVER["REQUEST_METHOD"] === "OPTIONS") {
-    http_response_code(200);
-    exit;
-}
+require_once __DIR__ . "/_lib/auth.php";
+funbikeBootstrapApi();
 
 // ==========================================
 // 1. CHEMIN
@@ -219,6 +211,7 @@ function saveContact($file, $contact) {
 // ==========================================
 
 $method = strtoupper($_SERVER["REQUEST_METHOD"]);
+funbikeProtectWriteMethods($method);
 
 if ($method === "GET") {
 
