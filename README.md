@@ -294,3 +294,39 @@ FormData: isEquipmentBrand=false
 ```
 
 Lors d'un `PUT`, un champ absent conserve sa valeur précédente. Le logo n'est remplacé que si un nouveau fichier `logo` est envoyé.
+
+## 10. Casques et équipements affichés sur l'accueil
+
+Les fichiers `storage/data/products/helmets.json` et `storage/data/products/riding-gear.json` utilisent le booléen :
+
+```json
+"isEquipementAccueil": true
+```
+
+- `true` : le produit est sélectionné pour la section d'accueil ;
+- `false` : le produit reste visible dans son catalogue, mais pas dans cette section ;
+- champ absent sur un ancien produit : valeur lue comme `false` ;
+- nouveau produit sans cette propriété : `false` par défaut.
+
+Cette sélection est indépendante de `isNewArrival`, qui concerne les nouveautés.
+
+Pour modifier le champ d'un casque avec un JSON :
+
+```http
+PUT /server/api/products/helmets.php?id=ID_DU_CASQUE
+Content-Type: application/json
+
+{
+  "isEquipementAccueil": false
+}
+```
+
+Utiliser `/server/api/products/riding-gear.php?id=ID_DE_L_EQUIPEMENT` pour un équipement. La valeur doit être un booléen JSON (`true` ou `false`), pas la chaîne `"false"`. Lors d'un `PUT`, un champ absent conserve sa valeur actuelle. Les formulaires multipart peuvent envoyer ces mêmes propriétés dans le champ JSON `product`.
+
+La route publique dédiée à cette section est :
+
+```text
+GET /server/api/homepage-equipment.php
+```
+
+Elle renvoie uniquement les casques et équipements ayant à la fois `isEquipementAccueil: true` et `status: "PUBLISHED"`. Les produits marqués `false` et les brouillons sont exclus de `data`. Les compteurs `meta.markedCount`, `meta.publishedCount` et `meta.displayedCount` permettent de contrôler la sélection.
