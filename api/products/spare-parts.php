@@ -5,15 +5,8 @@
 // GET / POST / PUT / DELETE
 // =====================================================
 
-header("Access-Control-Allow-Origin: *");
-header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");
-header("Access-Control-Allow-Headers: Content-Type, Authorization");
-header("Content-Type: application/json; charset=UTF-8");
-
-if ($_SERVER["REQUEST_METHOD"] === "OPTIONS") {
-    http_response_code(200);
-    exit;
-}
+require_once dirname(__DIR__) . "/_lib/auth.php";
+funbikeBootstrapApi();
 
 // =====================================================
 // CONFIGURATION
@@ -449,6 +442,8 @@ $method = strtoupper($_SERVER["REQUEST_METHOD"] ?? "GET");
 if ($method === "POST" && isset($_POST["_method"])) {
     $method = strtoupper($_POST["_method"]);
 }
+
+funbikeProtectWriteMethods($method);
 
 $id   = $_GET["id"] ?? $_POST["id"] ?? null;
 $data = readProducts($jsonFile);

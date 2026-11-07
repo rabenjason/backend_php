@@ -1,16 +1,9 @@
 <?php
 // server/api/brands.php
 
-// 1. Gestion des en-têtes CORS
-header("Access-Control-Allow-Origin: *");
-header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");
-header("Access-Control-Allow-Headers: Content-Type, Authorization");
-header("Content-Type: application/json; charset=UTF-8");
-
-if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
-    http_response_code(200);
-    exit;
-}
+// 1. HTTP, CORS et authentification partagés
+require_once __DIR__ . "/_lib/auth.php";
+funbikeBootstrapApi();
 
 // 2. Chemins
 $storageDir = dirname(__DIR__) . '/storage/data';
@@ -30,6 +23,8 @@ $method = $_SERVER['REQUEST_METHOD'];
 if ($method === 'POST' && isset($_POST['_method'])) {
     $method = strtoupper($_POST['_method']);
 }
+
+funbikeProtectWriteMethods($method);
 
 // 5. Chargement des données existantes
 function loadData($jsonFile) {
