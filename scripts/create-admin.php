@@ -1,7 +1,7 @@
 <?php
 
-// Usage : php scripts/create-admin.php nom_utilisateur
-// Le mot de passe temporaire est affiché une seule fois dans le terminal.
+// Usage unique : php scripts/create-admin.php nom_superadmin
+// Crée le seul superadmin, uniquement si users.json ne contient aucun compte.
 
 if (PHP_SAPI !== "cli") {
     http_response_code(404);
@@ -13,30 +13,29 @@ require_once dirname(__DIR__) . "/api/_lib/user-store.php";
 $username = $argv[1] ?? "";
 
 if ($username === "") {
-    fwrite(STDERR, "Usage : php scripts/create-admin.php nom_utilisateur\n");
+    fwrite(STDERR, "Usage : php scripts/create-admin.php nom_superadmin\n");
     exit(1);
 }
 
-// Une variable d'environnement peut être utilisée par un outil de déploiement.
-// Sinon, un mot de passe aléatoire est généré sans jamais passer dans l'historique shell.
 $configuredPassword = getenv("FUNBIKE_TEMP_PASSWORD");
 $generated = $configuredPassword === false || $configuredPassword === "";
 $temporaryPassword = $generated
-    ? bin2hex(random_bytes(12))
+    ? FunbikeUserStore::generateTemporaryPassword()
     : $configuredPassword;
 
 try {
     $store = new FunbikeUserStore();
-    $user = $store->createAdmin($username, $temporaryPassword);
+    $user = $store->createInitialSuperAdmin($username, $temporaryPassword);
 } catch (Throwable $error) {
     fwrite(STDERR, "Erreur : " . $error->getMessage() . "\n");
     exit(1);
 }
 
-fwrite(STDOUT, "Administrateur créé : " . $user["username"] . "\n");
+fwrite(STDOUT, "Superadministrateur initial créé : " . $user["username"] . "\n");
 
 if ($generated) {
     fwrite(STDOUT, "Mot de passe temporaire : " . $temporaryPassword . "\n");
 }
 
-fwrite(STDOUT, "Il devra obligatoirement changer ce mot de passe à la première connexion.\n");
+fwrite(STDOUT, "Il devra changer ce mot de passe à la première connexion.\n");
+fwrite(STDOUT, "Les prochains admins devront être créés par ce superadmin, pas par cette commande.\n");

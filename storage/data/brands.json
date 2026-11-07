@@ -3,57 +3,68 @@
         {
             "id": "tvs",
             "name": "TVS",
-            "logo": "/server/uploads/brands/tvs/logo.png"
+            "logo": "/server/uploads/brands/tvs/logo.png",
+            "isEquipmentBrand": true
         },
         {
             "id": "fantic",
             "name": "Fantic",
-            "logo": "/server/uploads/brands/fantic/logo.png"
+            "logo": "/server/uploads/brands/fantic/logo.png",
+            "isEquipmentBrand": false
         },
         {
             "id": "sherco",
             "name": "Sherco",
-            "logo": "/server/uploads/brands/sherco/logo.png"
+            "logo": "/server/uploads/brands/sherco/logo.png",
+            "isEquipmentBrand": false
         },
         {
             "id": "bihr",
             "name": "Bihr",
-            "logo": "/server/uploads/brands/bihr/logo.jpg"
+            "logo": "/server/uploads/brands/bihr/logo.jpg",
+            "isEquipmentBrand": true
         },
         {
             "id": "trace",
             "name": "Trace",
-            "logo": "/server/uploads/brands/trace/logo.png"
+            "logo": "/server/uploads/brands/trace/logo.png",
+            "isEquipmentBrand": false
         },
         {
             "id": "gaerne",
             "name": "Gaerne",
-            "logo": "/server/uploads/brands/gaerne/logo.jpg"
+            "logo": "/server/uploads/brands/gaerne/logo.jpg",
+            "isEquipmentBrand": true
         },
         {
             "id": "galfer",
             "name": "Galfer",
-            "logo": "/server/uploads/brands/galfer/logo.png"
+            "logo": "/server/uploads/brands/galfer/logo.png",
+            "isEquipmentBrand": false
         },
         {
             "id": "mt-helmets",
             "name": "MT Helmets",
-            "logo": "/server/uploads/brands/mt-helmets/logo.png"
+            "logo": "/server/uploads/brands/mt-helmets/logo.png",
+            "isEquipmentBrand": true
         },
         {
             "id": "troy-lee-designs",
             "name": "Troy Lee Designs",
-            "logo": "/server/uploads/brands/troy-lee-designs/logo.png"
+            "logo": "/server/uploads/brands/troy-lee-designs/logo.png",
+            "isEquipmentBrand": true
         },
         {
             "id": "spot",
             "name": "SPOT a jour",
-            "logo": "/server/uploads/brands/spot/logo.png"
+            "logo": "/server/uploads/brands/spot/logo.png",
+            "isEquipmentBrand": false
         },
         {
             "id": "test",
             "name": "TEST",
-            "logo": "/server/uploads/brands/test/logo.jpg"
+            "logo": "/server/uploads/brands/test/logo.jpg",
+            "isEquipmentBrand": false
         }
     ]
 }
