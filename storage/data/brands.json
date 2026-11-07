@@ -1,0 +1,59 @@
+{
+    "brands": [
+        {
+            "id": "tvs",
+            "name": "TVS",
+            "logo": "/server/uploads/brands/tvs/logo.png"
+        },
+        {
+            "id": "fantic",
+            "name": "Fantic",
+            "logo": "/server/uploads/brands/fantic/logo.png"
+        },
+        {
+            "id": "sherco",
+            "name": "Sherco",
+            "logo": "/server/uploads/brands/sherco/logo.png"
+        },
+        {
+            "id": "bihr",
+            "name": "Bihr",
+            "logo": "/server/uploads/brands/bihr/logo.jpg"
+        },
+        {
+            "id": "trace",
+            "name": "Trace",
+            "logo": "/server/uploads/brands/trace/logo.png"
+        },
+        {
+            "id": "gaerne",
+            "name": "Gaerne",
+            "logo": "/server/uploads/brands/gaerne/logo.jpg"
+        },
+        {
+            "id": "galfer",
+            "name": "Galfer",
+            "logo": "/server/uploads/brands/galfer/logo.png"
+        },
+        {
+            "id": "mt-helmets",
+            "name": "MT Helmets",
+            "logo": "/server/uploads/brands/mt-helmets/logo.png"
+        },
+        {
+            "id": "troy-lee-designs",
+            "name": "Troy Lee Designs",
+            "logo": "/server/uploads/brands/troy-lee-designs/logo.png"
+        },
+        {
+            "id": "spot",
+            "name": "SPOT a jour",
+            "logo": "/server/uploads/brands/spot/logo.png"
+        },
+        {
+            "id": "test",
+            "name": "TEST",
+            "logo": "/server/uploads/brands/test/logo.jpg"
+        }
+    ]
+}

@@ -1,0 +1,438 @@
+{
+  "products": [
+    {
+      "id": "p1",
+      "name": "Plaquettes de frein haute performance",
+      "brandId": "unknown-brand",
+      "categoryId": "pieces-detachees",
+      "productTypeId": "freinage",
+      "description": "",
+      "images": [
+        {
+          "id": "p1-image-1",
+          "url": "/server/uploads/products/spare-parts/p1/main.jpg",
+          "altText": "Plaquettes de frein haute performance",
+          "isMain": true,
+          "position": 0
+        }
+      ],
+      "specifications": [],
+      "status": "PUBLISHED",
+      "price": "Sur devis",
+      "isNewArrival": false
+    },
+    {
+      "id": "p2",
+      "name": "Kit filtration & entretien",
+      "brandId": "unknown-brand",
+      "categoryId": "pieces-detachees",
+      "productTypeId": "filtration",
+      "description": "",
+      "images": [
+        {
+          "id": "p2-image-1",
+          "url": "/server/uploads/products/spare-parts/p2/main.jpg",
+          "altText": "Kit filtration & entretien",
+          "isMain": true,
+          "position": 0
+        }
+      ],
+      "specifications": [],
+      "status": "PUBLISHED",
+      "price": "Sur devis",
+      "isNewArrival": false
+    },
+    {
+      "id": "p3",
+      "name": "Disque de frein Galfer Wave",
+      "brandId": "galfer",
+      "categoryId": "pieces-detachees",
+      "productTypeId": "freinage",
+      "description": "",
+      "images": [
+        {
+          "id": "p3-image-1",
+          "url": "/server/uploads/products/spare-parts/p3/main.png",
+          "altText": "Disque de frein Galfer Wave",
+          "isMain": true,
+          "position": 0
+        }
+      ],
+      "specifications": [],
+      "status": "PUBLISHED",
+      "price": "Sur devis",
+      "isNewArrival": false
+    },
+    {
+      "id": "p4",
+      "name": "Consommables moteur d'origine",
+      "brandId": "unknown-brand",
+      "categoryId": "pieces-detachees",
+      "productTypeId": "consommables",
+      "description": "",
+      "images": [
+        {
+          "id": "p4-image-1",
+          "url": "/server/uploads/products/spare-parts/p4/main.jpg",
+          "altText": "Consommables moteur d'origine",
+          "isMain": true,
+          "position": 0
+        }
+      ],
+      "specifications": [],
+      "status": "PUBLISHED",
+      "price": "Sur devis",
+      "isNewArrival": false
+    },
+    {
+      "id": "p5",
+      "name": "Kit chaîne renforcé",
+      "brandId": "unknown-brand",
+      "categoryId": "pieces-detachees",
+      "productTypeId": "transmission",
+      "description": "",
+      "images": [
+        {
+          "id": "p5-image-1",
+          "url": "/server/uploads/products/spare-parts/p5/main.jpg",
+          "altText": "Kit chaîne renforcé",
+          "isMain": true,
+          "position": 0
+        }
+      ],
+      "specifications": [],
+      "status": "PUBLISHED",
+      "price": "Sur devis",
+      "isNewArrival": false
+    },
+    {
+      "id": "p6",
+      "name": "Pièce mécanique d'origine",
+      "brandId": "unknown-brand",
+      "categoryId": "pieces-detachees",
+      "productTypeId": "pieces-moteur",
+      "description": "",
+      "images": [
+        {
+          "id": "p6-image-1",
+          "url": "/server/uploads/products/spare-parts/p6/main.jpg",
+          "altText": "Pièce mécanique d'origine",
+          "isMain": true,
+          "position": 0
+        }
+      ],
+      "specifications": [],
+      "status": "PUBLISHED",
+      "price": "Sur devis",
+      "isNewArrival": false
+    },
+    {
+      "id": "tvs-part-tyre-front",
+      "name": "Pneu avant route TVS 90/90-17",
+      "brandId": "unknown-brand",
+      "categoryId": "pieces-detachees",
+      "productTypeId": "pneus",
+      "description": "",
+      "images": [
+        {
+          "id": "tvs-part-tyre-front-image-1",
+          "url": "/server/uploads/products/spare-parts/tvs-part-tyre-front/main.jpg",
+          "altText": "Pneu avant route TVS 90/90-17",
+          "isMain": true,
+          "position": 0
+        }
+      ],
+      "specifications": [],
+      "status": "PUBLISHED",
+      "price": "Sur demande",
+      "compatibleBrandIds": ["tvs"],
+      "isNewArrival": false
+    },
+    {
+      "id": "tvs-part-tyre-rear",
+      "name": "Pneu arrière TVS 100/90-17",
+      "brandId": "unknown-brand",
+      "categoryId": "pieces-detachees",
+      "productTypeId": "pneus",
+      "description": "",
+      "images": [
+        {
+          "id": "tvs-part-tyre-rear-image-1",
+          "url": "/server/uploads/products/spare-parts/tvs-part-tyre-rear/main.jpg",
+          "altText": "Pneu arrière TVS 100/90-17",
+          "isMain": true,
+          "position": 0
+        }
+      ],
+      "specifications": [],
+      "status": "PUBLISHED",
+      "price": "Sur demande",
+      "compatibleBrandIds": ["tvs"],
+      "isNewArrival": false
+    },
+    {
+      "id": "tvs-part-chain-kit",
+      "name": "Kit chaîne renforcé TVS 428",
+      "brandId": "unknown-brand",
+      "categoryId": "pieces-detachees",
+      "productTypeId": "transmission",
+      "description": "",
+      "images": [
+        {
+          "id": "tvs-part-chain-kit-image-1",
+          "url": "/server/uploads/products/spare-parts/tvs-part-chain-kit/main.jpg",
+          "altText": "Kit chaîne renforcé TVS 428",
+          "isMain": true,
+          "position": 0
+        }
+      ],
+      "specifications": [],
+      "status": "PUBLISHED",
+      "price": "Sur demande",
+      "compatibleBrandIds": ["tvs"],
+      "isNewArrival": false
+    },
+    {
+      "id": "tvs-part-brake-pads",
+      "name": "Plaquettes de frein avant TVS",
+      "brandId": "unknown-brand",
+      "categoryId": "pieces-detachees",
+      "productTypeId": "freinage",
+      "description": "",
+      "images": [
+        {
+          "id": "tvs-part-brake-pads-image-1",
+          "url": "/server/uploads/products/spare-parts/tvs-part-brake-pads/main.jpg",
+          "altText": "Plaquettes de frein avant TVS",
+          "isMain": true,
+          "position": 0
+        }
+      ],
+      "specifications": [],
+      "status": "PUBLISHED",
+      "price": "Sur demande",
+      "compatibleBrandIds": ["tvs"],
+      "isNewArrival": false
+    },
+    {
+      "id": "tvs-part-air-filter",
+      "name": "Filtre à air TVS HLX / Raider",
+      "brandId": "unknown-brand",
+      "categoryId": "pieces-detachees",
+      "productTypeId": "filtration",
+      "description": "",
+      "images": [
+        {
+          "id": "tvs-part-air-filter-image-1",
+          "url": "/server/uploads/products/spare-parts/tvs-part-air-filter/main.jpg",
+          "altText": "Filtre à air TVS HLX / Raider",
+          "isMain": true,
+          "position": 0
+        }
+      ],
+      "specifications": [],
+      "status": "PUBLISHED",
+      "price": "Sur demande",
+      "compatibleBrandIds": ["tvs"],
+      "isNewArrival": false
+    },
+    {
+      "id": "tvs-part-brake-disc",
+      "name": "Disque de frein avant TVS",
+      "brandId": "unknown-brand",
+      "categoryId": "pieces-detachees",
+      "productTypeId": "freinage",
+      "description": "",
+      "images": [
+        {
+          "id": "tvs-part-brake-disc-image-1",
+          "url": "/server/uploads/products/spare-parts/tvs-part-brake-disc/main.png",
+          "altText": "Disque de frein avant TVS",
+          "isMain": true,
+          "position": 0
+        }
+      ],
+      "specifications": [],
+      "status": "PUBLISHED",
+      "price": "Sur demande",
+      "compatibleBrandIds": ["tvs"],
+      "isNewArrival": false
+    },
+    {
+      "id": "tvs-part-clutch-cable",
+      "name": "Câble d’embrayage TVS",
+      "brandId": "unknown-brand",
+      "categoryId": "pieces-detachees",
+      "productTypeId": "transmission",
+      "description": "",
+      "images": [
+        {
+          "id": "tvs-part-clutch-cable-image-1",
+          "url": "/server/uploads/products/spare-parts/tvs-part-clutch-cable/main.jpg",
+          "altText": "Câble d’embrayage TVS",
+          "isMain": true,
+          "position": 0
+        }
+      ],
+      "specifications": [],
+      "status": "PUBLISHED",
+      "price": "Sur demande",
+      "compatibleBrandIds": ["tvs"],
+      "isNewArrival": false
+    },
+    {
+      "id": "tvs-part-service-kit",
+      "name": "Kit entretien moteur TVS",
+      "brandId": "unknown-brand",
+      "categoryId": "pieces-detachees",
+      "productTypeId": "consommables",
+      "description": "",
+      "images": [
+        {
+          "id": "tvs-part-service-kit-image-1",
+          "url": "/server/uploads/products/spare-parts/tvs-part-service-kit/main.jpg",
+          "altText": "Kit entretien moteur TVS",
+          "isMain": true,
+          "position": 0
+        }
+      ],
+      "specifications": [],
+      "status": "PUBLISHED",
+      "price": "Sur demande",
+      "compatibleBrandIds": ["tvs"],
+      "isNewArrival": false
+    },
+    {
+      "id": "sherco-part-chain-kit",
+      "name": "Kit chaîne enduro Sherco",
+      "brandId": "unknown-brand",
+      "categoryId": "pieces-detachees",
+      "productTypeId": "transmission",
+      "description": "",
+      "images": [
+        {
+          "id": "sherco-part-chain-kit-image-1",
+          "url": "/server/uploads/products/spare-parts/sherco-part-chain-kit/main.jpg",
+          "altText": "Kit chaîne enduro Sherco",
+          "isMain": true,
+          "position": 0
+        }
+      ],
+      "specifications": [],
+      "status": "PUBLISHED",
+      "price": "Sur demande",
+      "compatibleBrandIds": ["sherco"],
+      "isNewArrival": false
+    },
+    {
+      "id": "sherco-part-brake-disc",
+      "name": "Disque de frein Galfer Sherco",
+      "brandId": "unknown-brand",
+      "categoryId": "pieces-detachees",
+      "productTypeId": "freinage",
+      "description": "",
+      "images": [
+        {
+          "id": "sherco-part-brake-disc-image-1",
+          "url": "/server/uploads/products/spare-parts/sherco-part-brake-disc/main.png",
+          "altText": "Disque de frein Galfer Sherco",
+          "isMain": true,
+          "position": 0
+        }
+      ],
+      "specifications": [],
+      "status": "PUBLISHED",
+      "price": "Sur demande",
+      "compatibleBrandIds": ["sherco"],
+      "isNewArrival": false
+    },
+    {
+      "id": "sherco-part-filter-kit",
+      "name": "Kit filtres enduro Sherco",
+      "brandId": "unknown-brand",
+      "categoryId": "pieces-detachees",
+      "productTypeId": "filtration",
+      "description": "",
+      "images": [
+        {
+          "id": "sherco-part-filter-kit-image-1",
+          "url": "/server/uploads/products/spare-parts/sherco-part-filter-kit/main.jpg",
+          "altText": "Kit filtres enduro Sherco",
+          "isMain": true,
+          "position": 0
+        }
+      ],
+      "specifications": [],
+      "status": "PUBLISHED",
+      "price": "Sur demande",
+      "compatibleBrandIds": ["sherco"],
+      "isNewArrival": false
+    },
+    {
+      "id": "fantic-part-chain-kit",
+      "name": "Kit chaîne cross Fantic XX 125",
+      "brandId": "unknown-brand",
+      "categoryId": "pieces-detachees",
+      "productTypeId": "transmission",
+      "description": "",
+      "images": [
+        {
+          "id": "fantic-part-chain-kit-image-1",
+          "url": "/server/uploads/products/spare-parts/fantic-part-chain-kit/main.jpg",
+          "altText": "Kit chaîne cross Fantic XX 125",
+          "isMain": true,
+          "position": 0
+        }
+      ],
+      "specifications": [],
+      "status": "PUBLISHED",
+      "price": "Sur demande",
+      "compatibleBrandIds": ["fantic"],
+      "isNewArrival": false
+    },
+    {
+      "id": "fantic-part-brake-pads",
+      "name": "Plaquettes de frein Fantic",
+      "brandId": "unknown-brand",
+      "categoryId": "pieces-detachees",
+      "productTypeId": "freinage",
+      "description": "",
+      "images": [
+        {
+          "id": "fantic-part-brake-pads-image-1",
+          "url": "/server/uploads/products/spare-parts/fantic-part-brake-pads/main.jpg",
+          "altText": "Plaquettes de frein Fantic",
+          "isMain": true,
+          "position": 0
+        }
+      ],
+      "specifications": [],
+      "status": "PUBLISHED",
+      "price": "Sur demande",
+      "compatibleBrandIds": ["fantic"],
+      "isNewArrival": false
+    },
+    {
+      "id": "fantic-part-air-filter",
+      "name": "Filtre à air Fantic XX 125",
+      "brandId": "unknown-brand",
+      "categoryId": "pieces-detachees",
+      "productTypeId": "filtration",
+      "description": "",
+      "images": [
+        {
+          "id": "fantic-part-air-filter-image-1",
+          "url": "/server/uploads/products/spare-parts/fantic-part-air-filter/main.jpg",
+          "altText": "Filtre à air Fantic XX 125",
+          "isMain": true,
+          "position": 0
+        }
+      ],
+      "specifications": [],
+      "status": "PUBLISHED",
+      "price": "Sur demande",
+      "compatibleBrandIds": ["fantic"],
+      "isNewArrival": false
+    }
+  ]
+}

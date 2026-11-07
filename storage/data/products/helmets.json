@@ -1,0 +1,403 @@
+{
+  "products": [
+    {
+      "id": "tvs-helmet-raider",
+      "name": "Casque intégral TVS Raider",
+      "brandId": "tvs",
+      "categoryId": "casques",
+      "productTypeId": "casque",
+      "description": "",
+      "images": [
+        {
+          "id": "tvs-helmet-raider-image-1",
+          "url": "/server/uploads/products/helmets/tvs-helmet-raider/main.jpg",
+          "altText": "Casque intégral TVS Raider",
+          "isMain": true,
+          "position": 0
+        }
+      ],
+      "specifications": [],
+      "status": "PUBLISHED",
+      "price": "Sur demande",
+      "isNewArrival": false
+    },
+    {
+      "id": "tvs-helmet-anti-matter",
+      "name": "Casque TVS Racing Anti Matter",
+      "brandId": "tvs",
+      "categoryId": "casques",
+      "productTypeId": "casque",
+      "description": "",
+      "images": [
+        {
+          "id": "tvs-helmet-anti-matter-image-1",
+          "url": "/server/uploads/products/helmets/tvs-helmet-anti-matter/main.jpg",
+          "altText": "Casque TVS Racing Anti Matter",
+          "isMain": true,
+          "position": 0
+        }
+      ],
+      "specifications": [],
+      "status": "PUBLISHED",
+      "price": "Sur demande",
+      "isNewArrival": false
+    },
+    {
+      "id": "h1",
+      "name": "MT Thunder 4 SV – Black",
+      "brandId": "mt-helmets",
+      "categoryId": "casques",
+      "productTypeId": "casque",
+      "description": "",
+      "images": [
+        {
+          "id": "h1-image-1",
+          "url": "/server/uploads/products/helmets/h1/main.jpg",
+          "altText": "MT Thunder 4 SV – Black",
+          "isMain": true,
+          "position": 0
+        }
+      ],
+      "specifications": [],
+      "status": "PUBLISHED",
+      "price": "Sur devis",
+      "isNewArrival": false
+    },
+    {
+      "id": "h2",
+      "name": "MT Thunder 4 SV – Matte Black",
+      "brandId": "mt-helmets",
+      "categoryId": "casques",
+      "productTypeId": "casque",
+      "description": "",
+      "images": [
+        {
+          "id": "h2-image-1",
+          "url": "/server/uploads/products/helmets/h2/main.jpg",
+          "altText": "MT Thunder 4 SV – Matte Black",
+          "isMain": true,
+          "position": 0
+        }
+      ],
+      "specifications": [],
+      "status": "PUBLISHED",
+      "price": "Sur devis",
+      "isNewArrival": false
+    },
+    {
+      "id": "h3",
+      "name": "MT Hornet – White",
+      "brandId": "mt-helmets",
+      "categoryId": "casques",
+      "productTypeId": "casque",
+      "description": "",
+      "images": [
+        {
+          "id": "h3-image-1",
+          "url": "/server/uploads/products/helmets/h3/main.jpg",
+          "altText": "MT Hornet – White",
+          "isMain": true,
+          "position": 0
+        }
+      ],
+      "specifications": [],
+      "status": "PUBLISHED",
+      "price": "Sur devis",
+      "isNewArrival": false
+    },
+    {
+      "id": "h4",
+      "name": "MT Hornet – Black",
+      "brandId": "mt-helmets",
+      "categoryId": "casques",
+      "productTypeId": "casque",
+      "description": "",
+      "images": [
+        {
+          "id": "h4-image-1",
+          "url": "/server/uploads/products/helmets/h4/main.jpg",
+          "altText": "MT Hornet – Black",
+          "isMain": true,
+          "position": 0
+        }
+      ],
+      "specifications": [],
+      "status": "PUBLISHED",
+      "price": "Sur devis",
+      "isNewArrival": false
+    },
+    {
+      "id": "h5",
+      "name": "MT Rapide – Black/Red",
+      "brandId": "mt-helmets",
+      "categoryId": "casques",
+      "productTypeId": "casque",
+      "description": "",
+      "images": [
+        {
+          "id": "h5-image-1",
+          "url": "/server/uploads/products/helmets/h5/main.jpg",
+          "altText": "MT Rapide – Black/Red",
+          "isMain": true,
+          "position": 0
+        }
+      ],
+      "specifications": [],
+      "status": "PUBLISHED",
+      "price": "Sur devis",
+      "isNewArrival": false
+    },
+    {
+      "id": "h6",
+      "name": "MT Rapide – White/Blue",
+      "brandId": "mt-helmets",
+      "categoryId": "casques",
+      "productTypeId": "casque",
+      "description": "",
+      "images": [
+        {
+          "id": "h6-image-1",
+          "url": "/server/uploads/products/helmets/h6/main.jpg",
+          "altText": "MT Rapide – White/Blue",
+          "isMain": true,
+          "position": 0
+        }
+      ],
+      "specifications": [],
+      "status": "PUBLISHED",
+      "price": "Sur devis",
+      "isNewArrival": false
+    },
+    {
+      "id": "t1",
+      "name": "GP Pro Pulse – Black",
+      "brandId": "troy-lee-designs",
+      "categoryId": "casques",
+      "productTypeId": "casque",
+      "description": "",
+      "images": [
+        {
+          "id": "t1-image-1",
+          "url": "/server/uploads/products/helmets/t1/main.jpg",
+          "altText": "GP Pro Pulse – Black",
+          "isMain": true,
+          "position": 0
+        }
+      ],
+      "specifications": [],
+      "status": "PUBLISHED",
+      "price": "Sur devis",
+      "isNewArrival": false
+    },
+    {
+      "id": "t2",
+      "name": "GP Pro Slides – Gray",
+      "brandId": "troy-lee-designs",
+      "categoryId": "casques",
+      "productTypeId": "casque",
+      "description": "",
+      "images": [
+        {
+          "id": "t2-image-1",
+          "url": "/server/uploads/products/helmets/t2/main.jpg",
+          "altText": "GP Pro Slides – Gray",
+          "isMain": true,
+          "position": 0
+        }
+      ],
+      "specifications": [],
+      "status": "PUBLISHED",
+      "price": "Sur devis",
+      "isNewArrival": false
+    },
+    {
+      "id": "t3",
+      "name": "GP Pro Slides – White/Blue",
+      "brandId": "troy-lee-designs",
+      "categoryId": "casques",
+      "productTypeId": "casque",
+      "description": "",
+      "images": [
+        {
+          "id": "t3-image-1",
+          "url": "/server/uploads/products/helmets/t3/main.jpg",
+          "altText": "GP Pro Slides – White/Blue",
+          "isMain": true,
+          "position": 0
+        }
+      ],
+      "specifications": [],
+      "status": "PUBLISHED",
+      "price": "Sur devis",
+      "isNewArrival": false
+    },
+    {
+      "id": "t4",
+      "name": "GP Pro Segment – Black",
+      "brandId": "troy-lee-designs",
+      "categoryId": "casques",
+      "productTypeId": "casque",
+      "description": "",
+      "images": [
+        {
+          "id": "t4-image-1",
+          "url": "/server/uploads/products/helmets/t4/main.jpg",
+          "altText": "GP Pro Segment – Black",
+          "isMain": true,
+          "position": 0
+        }
+      ],
+      "specifications": [],
+      "status": "PUBLISHED",
+      "price": "Sur devis",
+      "isNewArrival": false
+    },
+    {
+      "id": "t5",
+      "name": "GP Pro Segment – Red",
+      "brandId": "troy-lee-designs",
+      "categoryId": "casques",
+      "productTypeId": "casque",
+      "description": "",
+      "images": [
+        {
+          "id": "t5-image-1",
+          "url": "/server/uploads/products/helmets/t5/main.jpg",
+          "altText": "GP Pro Segment – Red",
+          "isMain": true,
+          "position": 0
+        }
+      ],
+      "specifications": [],
+      "status": "PUBLISHED",
+      "price": "Sur devis",
+      "isNewArrival": false
+    },
+    {
+      "id": "t6",
+      "name": "GP Pro Segment – Blue",
+      "brandId": "troy-lee-designs",
+      "categoryId": "casques",
+      "productTypeId": "casque",
+      "description": "",
+      "images": [
+        {
+          "id": "t6-image-1",
+          "url": "/server/uploads/products/helmets/t6/main.jpg",
+          "altText": "GP Pro Segment – Blue",
+          "isMain": true,
+          "position": 0
+        }
+      ],
+      "specifications": [],
+      "status": "PUBLISHED",
+      "price": "Sur devis",
+      "isNewArrival": false
+    },
+    {
+      "id": "t7",
+      "name": "GP Pro Mono – Pumice",
+      "brandId": "troy-lee-designs",
+      "categoryId": "casques",
+      "productTypeId": "casque",
+      "description": "",
+      "images": [
+        {
+          "id": "t7-image-1",
+          "url": "/server/uploads/products/helmets/t7/main.jpg",
+          "altText": "GP Pro Mono – Pumice",
+          "isMain": true,
+          "position": 0
+        }
+      ],
+      "specifications": [],
+      "status": "PUBLISHED",
+      "price": "Sur devis",
+      "isNewArrival": false
+    },
+    {
+      "id": "t8",
+      "name": "GP Pro Fifty50 – White/Red",
+      "brandId": "troy-lee-designs",
+      "categoryId": "casques",
+      "productTypeId": "casque",
+      "description": "",
+      "images": [
+        {
+          "id": "t8-image-1",
+          "url": "/server/uploads/products/helmets/t8/main.jpg",
+          "altText": "GP Pro Fifty50 – White/Red",
+          "isMain": true,
+          "position": 0
+        }
+      ],
+      "specifications": [],
+      "status": "PUBLISHED",
+      "price": "Sur devis",
+      "isNewArrival": false
+    },
+    {
+      "id": "t9",
+      "name": "GP Pro Crossover – Navy/Red",
+      "brandId": "troy-lee-designs",
+      "categoryId": "casques",
+      "productTypeId": "casque",
+      "description": "",
+      "images": [
+        {
+          "id": "t9-image-1",
+          "url": "/server/uploads/products/helmets/t9/main.jpg",
+          "altText": "GP Pro Crossover – Navy/Red",
+          "isMain": true,
+          "position": 0
+        }
+      ],
+      "specifications": [],
+      "status": "PUBLISHED",
+      "price": "Sur devis",
+      "isNewArrival": false
+    },
+    {
+      "id": "t10",
+      "name": "GP Pro Trooper – Black/Caper",
+      "brandId": "troy-lee-designs",
+      "categoryId": "casques",
+      "productTypeId": "casque",
+      "description": "",
+      "images": [
+        {
+          "id": "t10-image-1",
+          "url": "/server/uploads/products/helmets/t10/main.jpg",
+          "altText": "GP Pro Trooper – Black/Caper",
+          "isMain": true,
+          "position": 0
+        }
+      ],
+      "specifications": [],
+      "status": "PUBLISHED",
+      "price": "Sur devis",
+      "isNewArrival": false
+    },
+    {
+      "id": "t11",
+      "name": "GP Pro Crossover – Gray/Yellow",
+      "brandId": "troy-lee-designs",
+      "categoryId": "casques",
+      "productTypeId": "casque",
+      "description": "",
+      "images": [
+        {
+          "id": "t11-image-1",
+          "url": "/server/uploads/products/helmets/t11/main.jpg",
+          "altText": "GP Pro Crossover – Gray/Yellow",
+          "isMain": true,
+          "position": 0
+        }
+      ],
+      "specifications": [],
+      "status": "PUBLISHED",
+      "price": "Sur devis",
+      "isNewArrival": false
+    }
+  ]
+}

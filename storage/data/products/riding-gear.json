@@ -1,0 +1,193 @@
+{
+  "products": [
+    {
+      "id": "tvs-jacket-tech-core",
+      "name": "Blouson TVS Racing Tech-Core",
+      "brandId": "tvs",
+      "categoryId": "equipements",
+      "productTypeId": "blousons",
+      "description": "",
+      "images": [
+        {
+          "id": "tvs-jacket-tech-core-image-1",
+          "url": "/server/uploads/products/riding-gear/tvs-jacket-tech-core/main.png",
+          "altText": "Blouson TVS Racing Tech-Core",
+          "isMain": true,
+          "position": 0
+        }
+      ],
+      "specifications": [],
+      "status": "PUBLISHED",
+      "price": "Sur demande",
+      "isNewArrival": false
+    },
+    {
+      "id": "tvs-jacket-aegis",
+      "name": "Blouson TVS Racing Aegis 3 couches",
+      "brandId": "tvs",
+      "categoryId": "equipements",
+      "productTypeId": "blousons",
+      "description": "",
+      "images": [
+        {
+          "id": "tvs-jacket-aegis-image-1",
+          "url": "/server/uploads/products/riding-gear/tvs-jacket-aegis/main.png",
+          "altText": "Blouson TVS Racing Aegis 3 couches",
+          "isMain": true,
+          "position": 0
+        }
+      ],
+      "specifications": [],
+      "status": "PUBLISHED",
+      "price": "Sur demande",
+      "isNewArrival": false
+    },
+    {
+      "id": "tvs-gloves-city",
+      "name": "Gants TVS Racing City",
+      "brandId": "tvs",
+      "categoryId": "equipements",
+      "productTypeId": "gants",
+      "description": "",
+      "images": [
+        {
+          "id": "tvs-gloves-city-image-1",
+          "url": "/server/uploads/products/riding-gear/tvs-gloves-city/main.png",
+          "altText": "Gants TVS Racing City",
+          "isMain": true,
+          "position": 0
+        }
+      ],
+      "specifications": [],
+      "status": "PUBLISHED",
+      "price": "Sur demande",
+      "isNewArrival": false
+    },
+    {
+      "id": "g1",
+      "name": "Gaerne SG-12 – Black",
+      "brandId": "gaerne",
+      "categoryId": "equipements",
+      "productTypeId": "bottes",
+      "description": "",
+      "images": [
+        {
+          "id": "g1-image-1",
+          "url": "/server/uploads/products/riding-gear/g1/main.png",
+          "altText": "Gaerne SG-12 – Black",
+          "isMain": true,
+          "position": 0
+        }
+      ],
+      "specifications": [],
+      "status": "PUBLISHED",
+      "price": "Sur devis",
+      "isNewArrival": false
+    },
+    {
+      "id": "g2",
+      "name": "Gaerne SG-12 – White/Black",
+      "brandId": "gaerne",
+      "categoryId": "equipements",
+      "productTypeId": "bottes",
+      "description": "",
+      "images": [
+        {
+          "id": "g2-image-1",
+          "url": "/server/uploads/products/riding-gear/g2/main.png",
+          "altText": "Gaerne SG-12 – White/Black",
+          "isMain": true,
+          "position": 0
+        }
+      ],
+      "specifications": [],
+      "status": "PUBLISHED",
+      "price": "Sur devis",
+      "isNewArrival": false
+    },
+    {
+      "id": "g3",
+      "name": "Gaerne SG-22 – Black",
+      "brandId": "gaerne",
+      "categoryId": "equipements",
+      "productTypeId": "bottes",
+      "description": "",
+      "images": [
+        {
+          "id": "g3-image-1",
+          "url": "/server/uploads/products/riding-gear/g3/main.png",
+          "altText": "Gaerne SG-22 – Black",
+          "isMain": true,
+          "position": 0
+        }
+      ],
+      "specifications": [],
+      "status": "PUBLISHED",
+      "price": "Sur devis",
+      "isNewArrival": false
+    },
+    {
+      "id": "g4",
+      "name": "Gaerne Cross-Ace – Black",
+      "brandId": "gaerne",
+      "categoryId": "equipements",
+      "productTypeId": "bottes",
+      "description": "",
+      "images": [
+        {
+          "id": "g4-image-1",
+          "url": "/server/uploads/products/riding-gear/g4/main.png",
+          "altText": "Gaerne Cross-Ace – Black",
+          "isMain": true,
+          "position": 0
+        }
+      ],
+      "specifications": [],
+      "status": "PUBLISHED",
+      "price": "Sur devis",
+      "isNewArrival": false
+    },
+    {
+      "id": "g5",
+      "name": "Gaerne Speed Star – Black",
+      "brandId": "gaerne",
+      "categoryId": "equipements",
+      "productTypeId": "bottes",
+      "description": "",
+      "images": [
+        {
+          "id": "g5-image-1",
+          "url": "/server/uploads/products/riding-gear/g5/main.png",
+          "altText": "Gaerne Speed Star – Black",
+          "isMain": true,
+          "position": 0
+        }
+      ],
+      "specifications": [],
+      "status": "PUBLISHED",
+      "price": "Sur devis",
+      "isNewArrival": false
+    },
+    {
+      "id": "g6",
+      "name": "Gaerne Balance – Gray",
+      "brandId": "gaerne",
+      "categoryId": "equipements",
+      "productTypeId": "bottes",
+      "description": "",
+      "images": [
+        {
+          "id": "g6-image-1",
+          "url": "/server/uploads/products/riding-gear/g6/main.png",
+          "altText": "Gaerne Balance – Gray",
+          "isMain": true,
+          "position": 0
+        }
+      ],
+      "specifications": [],
+      "status": "PUBLISHED",
+      "price": "Sur devis",
+      "isNewArrival": false
+    }
+  ]
+}
