@@ -263,7 +263,7 @@ Ne pas utiliser `SameSite=None` sans HTTPS en production.
 
 ## 8. Routes du catalogue
 
-Les routes suivantes restent publiques en `GET` : marques, catégories, modèles, types de produits, motos, casques, pièces détachées, équipements, dealers, contacts et nouveautés.
+Les routes suivantes restent publiques en `GET` : marques, catégories, familles, modèles, types de produits, motos, casques, pièces détachées, équipements, dealers, contacts et nouveautés.
 
 Leurs routes `POST`, `PUT` et `DELETE` utilisent `funbikeProtectWriteMethods()` :
 
@@ -330,3 +330,63 @@ GET /server/api/homepage-equipment.php
 ```
 
 Elle renvoie uniquement les casques et équipements ayant à la fois `isEquipementAccueil: true` et `status: "PUBLISHED"`. Les produits marqués `false` et les brouillons sont exclus de `data`. Les compteurs `meta.markedCount`, `meta.publishedCount` et `meta.displayedCount` permettent de contrôler la sélection.
+
+## 11. Familles et types de produits
+
+Les familles sont enregistrées dans `storage/data/families.json` avec trois champs :
+
+```json
+{
+  "id": "off-road",
+  "name": "Off-road",
+  "categoryId": "motos"
+}
+```
+
+Le CRUD complet est disponible sur :
+
+```text
+GET    /server/api/families.php
+POST   /server/api/families.php
+PUT    /server/api/families.php?id=ID_DE_LA_FAMILLE
+DELETE /server/api/families.php?id=ID_DE_LA_FAMILLE
+```
+
+Le `GET` est public. Les écritures exigent un admin ou le superadmin. Pour créer ou modifier une famille, envoyer `name` et `categoryId`. La catégorie doit exister. L'identifiant est généré depuis le nom à la création et reste stable lors d'un `PUT`.
+
+Exemple de création :
+
+```json
+{
+  "name": "Off-road",
+  "categoryId": "motos"
+}
+```
+
+### Associer un type de produit à une famille
+
+`product-types.php` accepte maintenant le champ facultatif `familyId` :
+
+```json
+{
+  "name": "Enduro",
+  "categoryId": "motos",
+  "familyId": "off-road"
+}
+```
+
+Lorsqu'un `familyId` est fourni, le serveur vérifie que :
+
+1. la famille existe dans `families.json` ;
+2. son `categoryId` est identique à celui du type de produit.
+
+Une famille inexistante ou appartenant à une autre catégorie produit une erreur `400`. Les types sans famille restent valides, notamment les casques, équipements, pièces détachées et accessoires.
+
+Lors d'un `PUT` de type de produit :
+
+- `familyId` absent et catégorie inchangée : la famille actuelle est conservée ;
+- `familyId` fourni : la nouvelle association est validée puis enregistrée ;
+- catégorie changée sans nouveau `familyId` : l'ancienne famille est retirée ;
+- `familyId: null` ou `familyId: ""` : la famille est explicitement retirée.
+
+Comme pour les autres ressources JSON du projet, supprimer une famille ne supprime pas automatiquement les types de produits qui l'utilisent. Il faut d'abord modifier ou supprimer ces types si tu veux éviter des références orphelines.
