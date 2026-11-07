@@ -3,27 +3,32 @@
     {
       "id": "enduro",
       "name": "Enduro",
-      "categoryId": "motos"
+      "categoryId": "motos",
+      "familyId": "off-road"
     },
     {
       "id": "urbain",
       "name": "Urbain",
-      "categoryId": "motos"
+      "categoryId": "motos",
+      "familyId": "urbain"
     },
     {
       "id": "trois-roues",
       "name": "3 roues",
-      "categoryId": "motos"
+      "categoryId": "motos",
+      "familyId": "trois-roues"
     },
     {
       "id": "cross",
       "name": "Cross",
-      "categoryId": "motos"
+      "categoryId": "motos",
+      "familyId": "off-road"
     },
     {
       "id": "road-trail",
       "name": "Trail / aventure",
-      "categoryId": "motos"
+      "categoryId": "motos",
+      "familyId": "off-road"
     },
 
     {

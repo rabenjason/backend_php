@@ -13,6 +13,7 @@ funbikeBootstrapApi();
 
 $dataFile = dirname(__DIR__) . "/storage/data/product-types.json";
 $categoriesFile = dirname(__DIR__) . "/storage/data/categories.json";
+$familiesFile = dirname(__DIR__) . "/storage/data/families.json";
 
 // ==========================================
 // 2. FONCTIONS
@@ -104,7 +105,7 @@ function getRequestData() {
     return $data;
 }
 
-// Nettoyer les données : uniquement les 3 champs React
+// Nettoyer les données : 3 champs obligatoires + familyId facultatif
 function cleanProductTypes($types) {
     $result = [];
 
@@ -116,11 +117,17 @@ function cleanProductTypes($types) {
             continue;
         }
 
-        $result[] = [
+        $clean = [
             "id" => (string) $type["id"],
             "name" => (string) $type["name"],
             "categoryId" => (string) $type["categoryId"]
         ];
+
+        if (isset($type["familyId"]) && trim((string) $type["familyId"]) !== "") {
+            $clean["familyId"] = trim((string) $type["familyId"]);
+        }
+
+        $result[] = $clean;
     }
 
     return $result;
@@ -166,6 +173,51 @@ function categoryExists($categoriesFile, $categoryId) {
     }
 
     return false;
+}
+
+// Lire familyId envoyé : null ou une chaîne vide signifie "aucune famille".
+function requestedFamilyId($body) {
+    if (!array_key_exists("familyId", $body) || $body["familyId"] === null) {
+        return null;
+    }
+
+    if (!is_string($body["familyId"]) && !is_numeric($body["familyId"])) {
+        response(400, ["error" => "familyId doit être un identifiant texte ou null."]);
+    }
+
+    $familyId = trim((string) $body["familyId"]);
+
+    return $familyId === "" ? null : $familyId;
+}
+
+// Vérifier l'existence de la famille et sa cohérence avec la catégorie.
+function validateFamilyAssignment($familiesFile, $familyId, $categoryId) {
+    if ($familyId === null) {
+        return;
+    }
+
+    $families = readJson($familiesFile, "families");
+
+    foreach ($families as $family) {
+        if (!isset($family["id"]) || (string) $family["id"] !== $familyId) {
+            continue;
+        }
+
+        if (($family["categoryId"] ?? null) !== $categoryId) {
+            response(400, [
+                "error" => "Cette famille n'appartient pas à la catégorie choisie.",
+                "requested_familyId" => $familyId,
+                "requested_categoryId" => $categoryId
+            ]);
+        }
+
+        return;
+    }
+
+    response(400, [
+        "error" => "Cette famille n'existe pas.",
+        "requested_familyId" => $familyId
+    ]);
 }
 
 // Trouver un type par ID
@@ -237,6 +289,9 @@ if ($method === "POST") {
         ]);
     }
 
+    $familyId = requestedFamilyId($body);
+    validateFamilyAssignment($familiesFile, $familyId, $categoryId);
+
     $newId = slugify($name);
 
     if ($newId === "") {
@@ -258,6 +313,10 @@ if ($method === "POST") {
         "name" => $name,
         "categoryId" => $categoryId
     ];
+
+    if ($familyId !== null) {
+        $newType["familyId"] = $familyId;
+    }
 
     $types[] = $newType;
 
@@ -310,9 +369,28 @@ if ($method === "PUT") {
         ]);
     }
 
+    // Conserver la famille si elle n'est pas envoyée et que la catégorie ne
+    // change pas. Lors d'un changement de catégorie, l'ancienne famille est
+    // retirée pour éviter une association incohérente.
+    $familyId = $types[$index]["familyId"] ?? null;
+
+    if (array_key_exists("familyId", $body)) {
+        $familyId = requestedFamilyId($body);
+    } elseif ($categoryId !== $types[$index]["categoryId"]) {
+        $familyId = null;
+    }
+
+    validateFamilyAssignment($familiesFile, $familyId, $categoryId);
+
     // Conserver l'ancien ID
     $types[$index]["name"] = $name;
     $types[$index]["categoryId"] = $categoryId;
+
+    if ($familyId === null) {
+        unset($types[$index]["familyId"]);
+    } else {
+        $types[$index]["familyId"] = $familyId;
+    }
 
     if (!saveProductTypes($dataFile, $types)) {
         response(500, [
