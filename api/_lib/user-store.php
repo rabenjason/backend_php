@@ -1,13 +1,17 @@
 <?php
 
 // =====================================================
-// FUNBIKE - STOCKAGE PRIVÉ DES ADMINISTRATEURS
+// FUNBIKE - STOCKAGE PRIVÉ DES UTILISATEURS
 // =====================================================
 
+class FunbikeDuplicateUsernameException extends RuntimeException
+{
+}
+
 /**
- * Stockage JSON très volontairement limité aux opérations nécessaires :
- * trouver un compte, créer un admin et changer/réinitialiser son mot de passe.
- * Il n'existe aucune méthode HTTP pour lister les utilisateurs.
+ * Un seul superadmin peut exister. Les autres comptes sont forcément des
+ * admins et seul le superadmin authentifié peut les gérer via l'API.
+ * Les mots de passe en clair ne sont jamais écrits dans le JSON.
  */
 class FunbikeUserStore
 {
@@ -51,13 +55,23 @@ class FunbikeUserStore
             return "Le mot de passe doit contenir au moins 12 caractères.";
         }
 
-        // PASSWORD_DEFAULT utilise actuellement bcrypt, qui ignore les
-        // caractères au-delà de 72 octets. On évite cette ambiguïté.
         if ($length > 72) {
             return "Le mot de passe ne peut pas dépasser 72 octets.";
         }
 
         return null;
+    }
+
+    public static function generateTemporaryPassword()
+    {
+        return bin2hex(random_bytes(12));
+    }
+
+    public function listUsers()
+    {
+        $data = $this->readData();
+
+        return $data["users"];
     }
 
     public function findByUsername($username)
@@ -90,7 +104,19 @@ class FunbikeUserStore
         return null;
     }
 
+    /** Commande de bootstrap : autorisée uniquement avec zéro compte existant. */
+    public function createInitialSuperAdmin($username, $temporaryPassword)
+    {
+        return $this->createUser($username, $temporaryPassword, "superadmin", true);
+    }
+
+    /** Utilisé par l'API superadmin : impossible de choisir un autre rôle. */
     public function createAdmin($username, $temporaryPassword)
+    {
+        return $this->createUser($username, $temporaryPassword, "admin", false);
+    }
+
+    private function createUser($username, $temporaryPassword, $role, $requireEmptyStore)
     {
         $username = self::normalizeUsername($username);
         $usernameError = self::validateUsername($username);
@@ -105,10 +131,23 @@ class FunbikeUserStore
             throw new InvalidArgumentException($passwordError);
         }
 
-        return $this->mutateData(function (&$data) use ($username, $temporaryPassword) {
+        return $this->mutateData(function (&$data) use (
+            $username,
+            $temporaryPassword,
+            $role,
+            $requireEmptyStore
+        ) {
+            if ($requireEmptyStore && count($data["users"]) > 0) {
+                throw new RuntimeException(
+                    "Création initiale refusée : des comptes existent déjà. " .
+                    "Les nouveaux admins doivent être créés par le superadmin. " .
+                    "Pour un ancien fichier sans superadmin, utilisez scripts/promote-superadmin.php."
+                );
+            }
+
             foreach ($data["users"] as $user) {
                 if (($user["username"] ?? null) === $username) {
-                    throw new RuntimeException("Ce nom d'utilisateur existe déjà.");
+                    throw new FunbikeDuplicateUsernameException("Ce nom d'utilisateur existe déjà.");
                 }
             }
 
@@ -117,7 +156,7 @@ class FunbikeUserStore
                 "id" => bin2hex(random_bytes(16)),
                 "username" => $username,
                 "passwordHash" => $this->hashPassword($temporaryPassword),
-                "role" => "admin",
+                "role" => $role,
                 "mustChangePassword" => true,
                 "authVersion" => 1,
                 "createdAt" => $now,
@@ -127,6 +166,50 @@ class FunbikeUserStore
             $data["users"][] = $user;
 
             return $user;
+        });
+    }
+
+    /**
+     * Migration unique des anciennes installations : transforme un compte
+     * existant en superadmin, mais seulement s'il n'y en a aucun autre.
+     */
+    public function promoteSuperAdmin($username)
+    {
+        $username = self::normalizeUsername($username);
+
+        return $this->mutateData(function (&$data) use ($username) {
+            $targetIndex = -1;
+            $existingSuperAdmin = null;
+
+            foreach ($data["users"] as $index => $user) {
+                if (($user["username"] ?? null) === $username) {
+                    $targetIndex = $index;
+                }
+
+                if (($user["role"] ?? "admin") === "superadmin") {
+                    $existingSuperAdmin = $user;
+                }
+            }
+
+            if ($targetIndex === -1) {
+                return null;
+            }
+
+            if (
+                $existingSuperAdmin !== null &&
+                ($existingSuperAdmin["username"] ?? null) !== $username
+            ) {
+                throw new RuntimeException("Un autre superadmin existe déjà : " . $existingSuperAdmin["username"]);
+            }
+
+            // Même si le compte était déjà superadmin, relancer cette commande
+            // révoque ses sessions comme indiqué par le script CLI.
+            $data["users"][$targetIndex]["role"] = "superadmin";
+            $data["users"][$targetIndex]["authVersion"] =
+                (int) ($data["users"][$targetIndex]["authVersion"] ?? 1) + 1;
+            $data["users"][$targetIndex]["updatedAt"] = gmdate("c");
+
+            return $data["users"][$targetIndex];
         });
     }
 
@@ -144,11 +227,7 @@ class FunbikeUserStore
                     continue;
                 }
 
-                $data["users"][$index]["passwordHash"] = $this->hashPassword($newPassword);
-                $data["users"][$index]["mustChangePassword"] = false;
-                $data["users"][$index]["authVersion"] = (int) ($user["authVersion"] ?? 1) + 1;
-                $data["users"][$index]["passwordChangedAt"] = gmdate("c");
-                $data["users"][$index]["updatedAt"] = gmdate("c");
+                $this->applyPassword($data["users"][$index], $newPassword, false);
 
                 return $data["users"][$index];
             }
@@ -157,7 +236,8 @@ class FunbikeUserStore
         });
     }
 
-    public function resetPassword($username, $temporaryPassword)
+    /** Récupération d'urgence CLI réservée au superadmin. */
+    public function resetSuperAdminPassword($username, $temporaryPassword)
     {
         $username = self::normalizeUsername($username);
         $passwordError = self::validatePassword($temporaryPassword);
@@ -172,17 +252,85 @@ class FunbikeUserStore
                     continue;
                 }
 
-                $data["users"][$index]["passwordHash"] = $this->hashPassword($temporaryPassword);
-                $data["users"][$index]["mustChangePassword"] = true;
-                $data["users"][$index]["authVersion"] = (int) ($user["authVersion"] ?? 1) + 1;
-                $data["users"][$index]["updatedAt"] = gmdate("c");
-                unset($data["users"][$index]["passwordChangedAt"]);
+                if (($user["role"] ?? "admin") !== "superadmin") {
+                    throw new RuntimeException(
+                        "La récupération CLI est réservée au superadmin. " .
+                        "Un admin doit être réinitialisé par le superadmin via l'API."
+                    );
+                }
+
+                $this->applyPassword($data["users"][$index], $temporaryPassword, true);
 
                 return $data["users"][$index];
             }
 
             return null;
         });
+    }
+
+    /** Réinitialisation d'un admin par le superadmin, avec révocation des sessions. */
+    public function resetAdminPasswordById($id, $temporaryPassword)
+    {
+        $passwordError = self::validatePassword($temporaryPassword);
+
+        if ($passwordError !== null) {
+            throw new InvalidArgumentException($passwordError);
+        }
+
+        return $this->mutateData(function (&$data) use ($id, $temporaryPassword) {
+            foreach ($data["users"] as $index => $user) {
+                if (($user["id"] ?? null) !== $id) {
+                    continue;
+                }
+
+                if (($user["role"] ?? "admin") !== "admin") {
+                    throw new RuntimeException("Seul le mot de passe d'un admin peut être réinitialisé ici.");
+                }
+
+                $this->applyPassword($data["users"][$index], $temporaryPassword, true);
+
+                return $data["users"][$index];
+            }
+
+            return null;
+        });
+    }
+
+    /** Un superadmin ne peut jamais être supprimé par cette méthode. */
+    public function deleteAdminById($id)
+    {
+        return $this->mutateData(function (&$data) use ($id) {
+            foreach ($data["users"] as $index => $user) {
+                if (($user["id"] ?? null) !== $id) {
+                    continue;
+                }
+
+                if (($user["role"] ?? "admin") !== "admin") {
+                    throw new RuntimeException("Le superadmin ne peut pas être supprimé.");
+                }
+
+                unset($data["users"][$index]);
+                $data["users"] = array_values($data["users"]);
+
+                return $user;
+            }
+
+            return null;
+        });
+    }
+
+    private function applyPassword(&$user, $password, $mustChangePassword)
+    {
+        $user["passwordHash"] = $this->hashPassword($password);
+        $user["mustChangePassword"] = $mustChangePassword;
+        $user["authVersion"] = (int) ($user["authVersion"] ?? 1) + 1;
+        $user["updatedAt"] = gmdate("c");
+
+        if ($mustChangePassword) {
+            unset($user["passwordChangedAt"]);
+        } else {
+            $user["passwordChangedAt"] = gmdate("c");
+        }
     }
 
     private function hashPassword($password)
@@ -221,10 +369,6 @@ class FunbikeUserStore
         return $data;
     }
 
-    /**
-     * Exécute lecture + modification + écriture sous le même verrou exclusif.
-     * Le remplacement atomique évite qu'un lecteur reçoive un JSON partiel.
-     */
     private function mutateData($callback)
     {
         $directory = dirname($this->file);
@@ -291,7 +435,7 @@ class FunbikeUserStore
     }
 }
 
-/** Seules ces informations non sensibles peuvent être renvoyées au frontend. */
+/** Informations non sensibles renvoyées pour le compte connecté. */
 function funbikePublicUser($user)
 {
     return [
@@ -300,4 +444,13 @@ function funbikePublicUser($user)
         "role" => (string) ($user["role"] ?? "admin"),
         "mustChangePassword" => (bool) ($user["mustChangePassword"] ?? false)
     ];
+}
+
+/** Liste de gestion réservée au superadmin : jamais de passwordHash. */
+function funbikeManagedUser($user)
+{
+    return array_merge(funbikePublicUser($user), [
+        "createdAt" => (string) ($user["createdAt"] ?? ""),
+        "updatedAt" => (string) ($user["updatedAt"] ?? "")
+    ]);
 }

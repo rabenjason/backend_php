@@ -26,16 +26,79 @@ if ($method === 'POST' && isset($_POST['_method'])) {
 
 funbikeProtectWriteMethods($method);
 
-// 5. Chargement des données existantes
-function loadData($jsonFile) {
-    if (file_exists($jsonFile)) {
-        return json_decode(file_get_contents($jsonFile), true) ?: ["brands" => []];
+// 5. Chargement et normalisation des données existantes
+// Accepte les booléens JSON et les valeurs envoyées par un FormData.
+function normalizeBrandBoolean($value) {
+    if (is_bool($value)) {
+        return $value;
     }
-    return ["brands" => []];
+
+    if ($value === 1 || $value === "1") {
+        return true;
+    }
+
+    if ($value === 0 || $value === "0") {
+        return false;
+    }
+
+    if (is_string($value)) {
+        $value = strtolower(trim($value));
+
+        if (in_array($value, ["true", "on"], true)) {
+            return true;
+        }
+
+        if (in_array($value, ["false", ""], true)) {
+            return false;
+        }
+    }
+
+    return null;
+}
+
+function cleanBrands($brands) {
+    $result = [];
+
+    foreach ($brands as $brand) {
+        if (!is_array($brand) || !isset($brand['id'], $brand['name'], $brand['logo'])) {
+            continue;
+        }
+
+        $isEquipmentBrand = normalizeBrandBoolean($brand['isEquipmentBrand'] ?? false);
+
+        $result[] = [
+            "id" => (string) $brand['id'],
+            "name" => (string) $brand['name'],
+            "logo" => (string) $brand['logo'],
+            "isEquipmentBrand" => $isEquipmentBrand === null ? false : $isEquipmentBrand
+        ];
+    }
+
+    return $result;
+}
+
+function loadData($jsonFile) {
+    if (!file_exists($jsonFile)) {
+        return ["brands" => []];
+    }
+
+    $data = json_decode(file_get_contents($jsonFile), true);
+
+    if (!is_array($data) || !isset($data['brands']) || !is_array($data['brands'])) {
+        return ["brands" => []];
+    }
+
+    return ["brands" => cleanBrands($data['brands'])];
 }
 
 function saveData($jsonFile, $data) {
-    return file_put_contents($jsonFile, json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES)) !== false;
+    $data = ["brands" => cleanBrands($data['brands'])];
+
+    return file_put_contents(
+        $jsonFile,
+        json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES),
+        LOCK_EX
+    ) !== false;
 }
 
 // ==========================================
@@ -59,6 +122,17 @@ if ($method === 'POST') {
 
     $name = trim($_POST['name']);
     $id = generateSlug($name);
+    $isEquipmentBrand = false;
+
+    if (array_key_exists('isEquipmentBrand', $_POST)) {
+        $isEquipmentBrand = normalizeBrandBoolean($_POST['isEquipmentBrand']);
+
+        if ($isEquipmentBrand === null) {
+            http_response_code(400);
+            echo json_encode(["error" => "isEquipmentBrand doit être true, false, 1 ou 0."]);
+            exit;
+        }
+    }
 
     if (!isset($_FILES['logo']) || $_FILES['logo']['error'] !== UPLOAD_ERR_OK) {
         http_response_code(400);
@@ -96,7 +170,12 @@ if ($method === 'POST') {
         }
     }
 
-    $newBrand = ["id" => $id, "name" => $name, "logo" => "/server/uploads/brands/$id/logo.$fileExt"];
+    $newBrand = [
+        "id" => $id,
+        "name" => $name,
+        "logo" => "/server/uploads/brands/$id/logo.$fileExt",
+        "isEquipmentBrand" => $isEquipmentBrand
+    ];
     $data['brands'][] = $newBrand;
     saveData($jsonFile, $data);
 
@@ -132,6 +211,19 @@ if ($method === 'PUT') {
     // Mise à jour du nom
     if (!empty($_POST['name'])) {
         $data['brands'][$brandIndex]['name'] = trim($_POST['name']);
+    }
+
+    // Mise à jour du type de marque sans exiger un nouveau logo.
+    if (array_key_exists('isEquipmentBrand', $_POST)) {
+        $isEquipmentBrand = normalizeBrandBoolean($_POST['isEquipmentBrand']);
+
+        if ($isEquipmentBrand === null) {
+            http_response_code(400);
+            echo json_encode(["error" => "isEquipmentBrand doit être true, false, 1 ou 0."]);
+            exit;
+        }
+
+        $data['brands'][$brandIndex]['isEquipmentBrand'] = $isEquipmentBrand;
     }
 
     // Mise à jour du logo (si un nouveau fichier est fourni)

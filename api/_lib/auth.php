@@ -111,7 +111,7 @@ function funbikeRequireAuthenticatedUser($allowPasswordChange = false)
         ]);
     }
 
-    if (($user["role"] ?? "") !== "admin") {
+    if (!in_array($user["role"] ?? "admin", ["admin", "superadmin"], true)) {
         funbikeJsonResponse(403, [
             "success" => false,
             "code" => "ADMIN_REQUIRED",
@@ -134,6 +134,22 @@ function funbikeRequireAuthenticatedUser($allowPasswordChange = false)
 function funbikeRequireAdmin()
 {
     return funbikeRequireAuthenticatedUser(false);
+}
+
+/** Seul le superadmin unique peut gérer les comptes utilisateurs. */
+function funbikeRequireSuperAdmin()
+{
+    $user = funbikeRequireAuthenticatedUser(false);
+
+    if (($user["role"] ?? "admin") !== "superadmin") {
+        funbikeJsonResponse(403, [
+            "success" => false,
+            "code" => "SUPERADMIN_REQUIRED",
+            "message" => "Seul le superadmin peut gérer les utilisateurs."
+        ]);
+    }
+
+    return $user;
 }
 
 /** Les consultations restent publiques ; toute écriture exige un admin. */

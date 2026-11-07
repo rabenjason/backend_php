@@ -1,41 +1,59 @@
 # Backend FunBike
 
-API PHP avec stockage JSON. Le catalogue reste consultable publiquement, mais toutes les modifications sont réservées aux administrateurs connectés.
+API PHP avec stockage JSON. Le catalogue reste consultable publiquement. Les modifications du catalogue sont réservées aux admins et la gestion des comptes est réservée à un **superadmin unique**.
 
 Prérequis : PHP 7.4 ou supérieur (PHP 8 recommandé), les sessions PHP activées et un dossier privé accessible en écriture par PHP.
 
-## 1. Règles d'accès
+## 1. Rôles et permissions
 
-| Requête | Visiteur | Admin avec mot de passe temporaire | Admin avec mot de passe définitif |
+| Action | Visiteur | Admin | Superadmin |
 |---|---:|---:|---:|
-| `GET` sur les catalogues et coordonnées | Oui | Oui | Oui |
-| Connexion et consultation de sa propre session | Oui | Oui | Oui |
-| Changement de son propre mot de passe | Non | **Oui, obligatoire** | Oui |
-| `POST`, `PUT`, `DELETE` sur le contenu | Non | **Non** | Oui |
+| Consulter les API publiques en `GET` | Oui | Oui | Oui |
+| Se connecter et changer son propre mot de passe | Non | Oui | Oui |
+| Ajouter, modifier ou supprimer le contenu du catalogue | Non | Oui | Oui |
+| Consulter la liste sécurisée des utilisateurs | Non | Non | Oui |
+| Créer un admin | Non | Non | Oui |
+| Réinitialiser le mot de passe d'un autre admin | Non | Non | Oui |
+| Supprimer un autre admin | Non | Non | Oui |
+| Créer ou supprimer un superadmin | Non | Non | Non |
 
-Il n'y a volontairement **aucune route pour lister les utilisateurs** et aucune route publique pour créer un administrateur.
+Tout compte nouvellement créé ou réinitialisé reçoit un mot de passe temporaire. Après sa connexion, `mustChangePassword` vaut `true` et il doit immédiatement choisir un nouveau mot de passe. Tant que cette étape n'est pas terminée, il ne peut ni gérer le catalogue ni gérer les utilisateurs.
 
-## 2. Créer le premier administrateur
+## 2. Créer le seul superadmin
 
-Sur le serveur, dans le dossier du backend :
+Cette commande ne fonctionne que lorsque `users.json` ne contient **aucun compte** :
 
 ```bash
 php scripts/create-admin.php admin
 ```
 
-Le terminal affiche un mot de passe temporaire aléatoire. Il faut le transmettre à l'administrateur par un canal privé. Aucun compte ni mot de passe par défaut n'est inclus dans le projet.
+Elle crée le superadmin initial et affiche son mot de passe temporaire. Après cela, toute nouvelle tentative avec cette commande échoue : les autres comptes doivent être créés par le superadmin depuis l'interface d'administration.
 
-Pour réinitialiser le mot de passe d'un compte existant :
+Aucun compte ni mot de passe par défaut n'est inclus dans Git.
+
+### Migrer une ancienne installation
+
+Les comptes créés par l'ancienne version ont le rôle `admin`. Pour transformer **un compte existant** en superadmin sans créer un nouveau compte :
 
 ```bash
-php scripts/reset-admin-password.php admin
+php scripts/promote-superadmin.php nom_du_compte_existant
 ```
 
-Cette commande révoque aussi ses sessions existantes et impose de nouveau le changement de mot de passe.
+Cette migration fonctionne uniquement s'il n'existe pas déjà un autre superadmin. Elle révoque les anciennes sessions du compte promu.
 
-Pour un déploiement automatisé, il est possible de fournir le temporaire via la variable `FUNBIKE_TEMP_PASSWORD`. Ne pas mettre cette valeur dans Git ni dans une URL.
+### Récupération d'urgence du superadmin
 
-## 3. Parcours de première connexion
+Si le superadmin a oublié son mot de passe :
+
+```bash
+php scripts/reset-admin-password.php nom_superadmin
+```
+
+Cette commande CLI est réservée au superadmin. Elle ne permet plus de réinitialiser un admin ordinaire : cette action appartient au superadmin via l'API. Elle révoque les sessions existantes et impose le changement du temporaire à la prochaine connexion.
+
+Pour un déploiement automatisé, `FUNBIKE_TEMP_PASSWORD` peut fournir le temporaire. Ne jamais enregistrer cette valeur dans Git ou dans une URL.
+
+## 3. Connexion et changement obligatoire
 
 ### Connexion
 
@@ -49,9 +67,9 @@ Content-Type: application/json
 }
 ```
 
-La réponse contient `"mustChangePassword": true`. Le frontend doit alors afficher **uniquement la page de changement de mot de passe**, sans ouvrir l'administration du catalogue.
+La réponse contient le rôle (`admin` ou `superadmin`) et `mustChangePassword`. Si ce dernier vaut `true`, le frontend doit afficher uniquement la page de changement de mot de passe.
 
-### Changement obligatoire
+### Changement du mot de passe du compte connecté
 
 ```http
 POST /server/api/auth/change-password.php
@@ -64,13 +82,59 @@ Content-Type: application/json
 }
 ```
 
-Le nouveau mot de passe doit comporter entre 12 et 72 octets et être différent de l'ancien. Après cette étape, `mustChangePassword` devient `false` et l'accès administrateur est ouvert.
+Le nouveau mot de passe doit comporter entre 12 et 72 octets et être différent de l'ancien. Après cette étape, `mustChangePassword` devient `false`.
 
-Si le frontend essaie quand même une écriture avant cette étape, l'API répond `403` avec le code `PASSWORD_CHANGE_REQUIRED`. La restriction est donc appliquée par le serveur, pas seulement par React.
+Autres routes de session :
 
-### Exemples JavaScript
+- `GET /server/api/auth/me.php` : compte connecté, rôle et état du changement obligatoire ;
+- `POST /server/api/auth/logout.php` : déconnexion.
 
-Le cookie de session doit accompagner toutes les requêtes d'authentification et toutes les écritures :
+## 4. Gestion des utilisateurs par le superadmin
+
+Toutes ces routes exigent une session superadmin dont le mot de passe temporaire a déjà été changé. Un admin ordinaire reçoit `403 SUPERADMIN_REQUIRED`.
+
+### Lister les comptes sans donnée sensible
+
+```http
+GET /server/api/auth/users.php
+```
+
+La réponse contient uniquement `id`, `username`, `role`, `mustChangePassword`, `createdAt` et `updatedAt`. Elle ne contient jamais `passwordHash` ni de mot de passe.
+
+### Créer un admin
+
+```http
+POST /server/api/auth/users.php
+Content-Type: application/json
+
+{
+  "username": "nouvel_admin"
+}
+```
+
+Le serveur impose le rôle `admin`, même si une autre valeur de rôle est envoyée. Il génère un mot de passe temporaire et le retourne **une seule fois** dans `temporaryPassword` au superadmin. Celui-ci doit le transmettre par un canal privé. Le nouvel admin devra le changer à sa première connexion.
+
+### Réinitialiser le mot de passe d'un autre admin
+
+```http
+PUT /server/api/auth/users.php?id=ID_DE_L_ADMIN
+```
+
+Un nouveau temporaire est retourné une seule fois au superadmin. Les anciennes sessions de l'admin sont révoquées et `mustChangePassword` redevient `true`.
+
+Cette route refuse de réinitialiser le compte superadmin connecté : pour son propre mot de passe, il utilise `change-password.php`.
+
+### Supprimer un autre admin
+
+```http
+DELETE /server/api/auth/users.php?id=ID_DE_L_ADMIN
+```
+
+L'admin supprimé ne peut plus utiliser ses sessions. Le superadmin ne peut pas supprimer son propre compte et aucune route ne permet de supprimer le superadmin.
+
+## 5. Intégration frontend
+
+Le cookie doit accompagner les requêtes de session, les écritures du catalogue et la gestion des utilisateurs :
 
 ```js
 async function api(url, options = {}) {
@@ -107,16 +171,11 @@ await api("/server/api/auth/change-password.php", {
 });
 ```
 
-Pour les formulaires produits utilisant `FormData`, ajouter aussi `credentials: "include"`, mais **ne pas définir manuellement** `Content-Type` : le navigateur doit générer la frontière multipart.
+Pour les formulaires `FormData`, ajouter aussi `credentials: "include"`, mais ne pas définir manuellement `Content-Type` : le navigateur doit générer la frontière multipart.
 
-Autres routes :
+Le frontend doit masquer la gestion des utilisateurs aux admins ordinaires, mais le backend refait obligatoirement cette vérification : cacher les boutons ne suffit pas.
 
-- `GET /server/api/auth/me.php` : compte connecté et état `mustChangePassword` ;
-- `POST /server/api/auth/logout.php` : déconnexion.
-
-Les réponses d'authentification ne contiennent jamais `passwordHash`.
-
-## 4. Confidentialité de `users.json`
+## 6. Confidentialité de `users.json`
 
 Les comptes sont enregistrés dans :
 
@@ -124,7 +183,7 @@ Les comptes sont enregistrés dans :
 storage/private/users.json
 ```
 
-Exemple de structure interne :
+Structure interne :
 
 ```json
 {
@@ -133,7 +192,7 @@ Exemple de structure interne :
       "id": "identifiant-aleatoire",
       "username": "admin",
       "passwordHash": "$2y$...",
-      "role": "admin",
+      "role": "superadmin",
       "mustChangePassword": true,
       "authVersion": 1
     }
@@ -141,20 +200,21 @@ Exemple de structure interne :
 }
 ```
 
-Le mot de passe temporaire et le mot de passe définitif ne sont **jamais stockés en clair**. `password_hash()` crée l'empreinte et `password_verify()` vérifie la connexion.
+Les mots de passe temporaires et définitifs ne sont **jamais stockés en clair**. `password_hash()` crée l'empreinte et `password_verify()` vérifie la connexion.
 
-Protections mises en place :
+Protections :
 
-- aucun endpoint `GET users` ou équivalent ;
-- `storage/.htaccess` refuse l'accès HTTP direct à tous les JSON ;
+- aucun accès public au JSON ou à la liste des utilisateurs ;
+- liste limitée au superadmin et nettoyée de toute donnée sensible ;
+- `storage/.htaccess` refuse l'accès HTTP direct aux JSON sous Apache ;
 - `api/_lib/.htaccess` et `scripts/.htaccess` bloquent les fichiers internes ;
-- les scripts de création/réinitialisation refusent toute exécution hors CLI ;
+- les scripts de gestion initiale/récupération refusent toute exécution hors CLI ;
 - le vrai `users.json`, ses verrous et ses fichiers temporaires sont exclus de Git ;
 - écriture atomique et verrouillage pour éviter un JSON corrompu.
 
 ### Apache
 
-Vérifier que les fichiers `.htaccess` sont pris en compte (`AllowOverride All` ou au minimum `AllowOverride AuthConfig`). Tester ensuite que l'URL suivante renvoie bien `403` ou `404`, jamais `200` :
+Vérifier que `.htaccess` est pris en compte (`AllowOverride All` ou au minimum `AllowOverride AuthConfig`). L'URL suivante doit répondre `403` ou `404`, jamais `200` :
 
 ```text
 /server/storage/private/users.json
@@ -162,7 +222,7 @@ Vérifier que les fichiers `.htaccess` sont pris en compte (`AllowOverride All` 
 
 ### Nginx ou hébergement sans `.htaccess`
 
-`.htaccess` n'est pas lu par Nginx. Ajouter des règles équivalentes, par exemple en adaptant le préfixe `/server` :
+Ajouter les règles équivalentes en adaptant le préfixe `/server` :
 
 ```nginx
 location ^~ /server/storage/ { deny all; }
@@ -170,25 +230,29 @@ location ^~ /server/api/_lib/ { deny all; }
 location ^~ /server/scripts/ { deny all; }
 ```
 
-La protection la plus forte consiste à placer le fichier **en dehors de la racine web** :
+La protection la plus forte consiste à placer le fichier en dehors de la racine web :
 
 ```bash
 export FUNBIKE_USERS_FILE=/chemin/prive/hors-web/funbike-users.json
 ```
 
-Cette variable doit avoir la même valeur pour PHP-FPM/Apache et pour les commandes CLI. Le dossier doit être accessible en écriture par le processus PHP, mais jamais servi par le web.
+Cette variable doit avoir la même valeur pour le serveur PHP et les commandes CLI.
 
-## 5. Configuration frontend et HTTPS
+### Serveur de développement PHP
 
-Si React et l'API ont des origines différentes, définir les origines autorisées sans `/` final :
+`php -S localhost:4000` est pratique pour tester localement, mais il **ignore `.htaccess`**. Ne jamais l'utiliser comme serveur de production ni l'exposer publiquement. Tester la protection directe du JSON avec Apache/Nginx ou placer `FUNBIKE_USERS_FILE` hors de la racine servie.
+
+## 7. Origines et HTTPS
+
+Si React et l'API ont des origines différentes :
 
 ```bash
 export FUNBIKE_ALLOWED_ORIGINS=https://www.funbike.mg,https://admin.funbike.mg
 ```
 
-Les origines locales `localhost:3000`, `localhost:5173` et leurs équivalents `127.0.0.1` sont acceptées par défaut pour le développement. L'origine du serveur lui-même est aussi acceptée. Une connexion ou une écriture portant l'en-tête `Origin` d'un site non autorisé est refusée avec `403 ORIGIN_NOT_ALLOWED`, même si un cookie de session est présent.
+Les origines locales `localhost:3000`, `localhost:5173` et leurs équivalents `127.0.0.1` sont acceptées par défaut. L'origine du serveur est aussi acceptée. Une connexion ou une écriture portant l'en-tête `Origin` d'un site non autorisé reçoit `403 ORIGIN_NOT_ALLOWED`, même avec un cookie valide.
 
-Le cookie est `HttpOnly` et utilise `SameSite=Lax` par défaut. Pour un frontend et une API sur des **sites** différents, utiliser HTTPS et :
+Le cookie est `HttpOnly` et utilise `SameSite=Lax` par défaut. Pour un frontend et une API sur des sites différents, utiliser HTTPS et :
 
 ```bash
 export FUNBIKE_COOKIE_SAMESITE=None
@@ -197,12 +261,36 @@ export FUNBIKE_COOKIE_SECURE=1
 
 Ne pas utiliser `SameSite=None` sans HTTPS en production.
 
-## 6. Comportement des anciennes routes
+## 8. Routes du catalogue
 
-Les routes suivantes continuent à répondre publiquement en `GET` :
+Les routes suivantes restent publiques en `GET` : marques, catégories, modèles, types de produits, motos, casques, pièces détachées, équipements, dealers, contacts et nouveautés.
 
-- marques, catégories, modèles, types de produits ;
-- motos, casques, pièces détachées et équipements ;
-- dealers, contacts et nouveautés de l'accueil.
+Leurs routes `POST`, `PUT` et `DELETE` utilisent `funbikeProtectWriteMethods()` :
 
-Leurs routes `POST`, `PUT` et `DELETE` passent désormais par `funbikeProtectWriteMethods()`. Sans session, elles répondent `401 AUTH_REQUIRED`. Avec un mot de passe temporaire non changé, elles répondent `403 PASSWORD_CHANGE_REQUIRED`.
+- sans session : `401 AUTH_REQUIRED` ;
+- avec un temporaire non changé : `403 PASSWORD_CHANGE_REQUIRED` ;
+- avec un admin ou le superadmin connecté : action autorisée.
+
+## 9. Champ `isEquipmentBrand` des marques
+
+Chaque marque possède un booléen `isEquipmentBrand`. Les anciennes marques sans cette propriété sont automatiquement lues avec `false`.
+
+Lors d'un `POST /server/api/brands.php`, le champ FormData est facultatif :
+
+```text
+name=Nom de la marque
+logo=<fichier>
+isEquipmentBrand=true
+```
+
+Sans `isEquipmentBrand`, la nouvelle marque est créée avec `false`. Les valeurs acceptées sont les booléens JSON et les valeurs FormData `true`, `false`, `1`, `0` ; une case HTML cochée avec `on` est aussi acceptée.
+
+Pour modifier uniquement ce champ sans remplacer le logo :
+
+```text
+POST /server/api/brands.php?id=ID_DE_LA_MARQUE
+FormData: _method=PUT
+FormData: isEquipmentBrand=false
+```
+
+Lors d'un `PUT`, un champ absent conserve sa valeur précédente. Le logo n'est remplacé que si un nouveau fichier `logo` est envoyé.
